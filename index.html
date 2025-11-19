@@ -230,6 +230,794 @@
         </div>
     </section>
 
+    // ============================================
+// QUIZ DATA - 10 Soal Interaktif
+// ============================================
+const quizQuestions = [
+    {
+        question: "Siapa ilmuwan yang pertama kali menemukan sistem golongan darah ABO pada tahun 1900?",
+        options: [
+            "Karl Landsteiner",
+            "Gregor Mendel",
+            "Charles Darwin",
+            "Louis Pasteur"
+        ],
+        correct: 0,
+        explanation: "Karl Landsteiner menemukan sistem golongan darah ABO pada tahun 1900 dan menerima Hadiah Nobel untuk penemuannya pada tahun 1930. Penemuan ini merevolusi transfusi darah dan menyelamatkan jutaan nyawa."
+    },
+    {
+        question: "Golongan darah manakah yang disebut sebagai 'donor universal'?",
+        options: [
+            "Golongan A",
+            "Golongan B",
+            "Golongan AB",
+            "Golongan O"
+        ],
+        correct: 3,
+        explanation: "Golongan O disebut donor universal karena tidak memiliki antigen A atau B pada sel darah merahnya, sehingga dapat diberikan kepada semua golongan darah tanpa menyebabkan reaksi aglutinasi."
+    },
+    {
+        question: "Seseorang dengan golongan darah AB memiliki genotipe apa?",
+        options: [
+            "IAIA",
+            "IBIB",
+            "IAIB",
+            "ii"
+        ],
+        correct: 2,
+        explanation: "Golongan darah AB memiliki genotipe IAIB, menunjukkan kodominansi di mana kedua alel IA dan IB sama-sama terekspresikan pada permukaan sel darah merah."
+    },
+    {
+        question: "Jika ayah bergolongan darah A (IAi) dan ibu bergolongan darah B (IBi), anak mereka TIDAK MUNGKIN memiliki golongan darah?",
+        options: [
+            "Semua golongan mungkin",
+            "Hanya golongan O",
+            "Hanya golongan AB",
+            "Golongan A dan B saja"
+        ],
+        correct: 0,
+        explanation: "Persilangan IAi × IBi dapat menghasilkan semua kemungkinan golongan darah: A (IAi), B (IBi), AB (IAIB), dan O (ii) dengan probabilitas masing-masing 25%. Ini adalah satu-satunya kombinasi orang tua yang dapat menghasilkan keempat golongan darah."
+    },
+    {
+        question: "Apa yang dimaksud dengan aglutinasi dalam konteks transfusi darah?",
+        options: [
+            "Proses pembentukan sel darah baru",
+            "Penggumpalan darah akibat reaksi antigen-antibodi",
+            "Peningkatan jumlah sel darah putih",
+            "Pemisahan plasma dari sel darah"
+        ],
+        correct: 1,
+        explanation: "Aglutinasi adalah penggumpalan sel darah merah yang terjadi ketika antigen pada sel darah merah bereaksi dengan antibodi yang tidak kompatibel dalam plasma. Ini adalah reaksi berbahaya yang dapat terjadi pada transfusi darah yang tidak cocok."
+    },
+    {
+        question: "Golongan darah O memiliki antibodi apa dalam plasmanya?",
+        options: [
+            "Tidak ada antibodi",
+            "Antibodi Anti-A saja",
+            "Antibodi Anti-B saja",
+            "Antibodi Anti-A dan Anti-B"
+        ],
+        correct: 3,
+        explanation: "Golongan darah O memiliki antibodi Anti-A dan Anti-B dalam plasmanya. Karena tidak memiliki antigen A atau B, tubuh menganggap keduanya sebagai zat asing dan memproduksi antibodi terhadap keduanya."
+    },
+    {
+        question: "Apa yang dimaksud dengan faktor Rhesus (Rh)?",
+        options: [
+            "Jenis protein dalam plasma darah",
+            "Antigen D pada permukaan sel darah merah",
+            "Hormon yang mengatur produksi darah",
+            "Antibodi khusus dalam darah"
+        ],
+        correct: 1,
+        explanation: "Faktor Rhesus adalah antigen D yang terdapat pada permukaan sel darah merah. Jika seseorang memiliki antigen D, golongan darahnya Rh positif (+); jika tidak memilikinya, Rh negatif (-)."
+    },
+    {
+        question: "Penyakit Hemolitik pada Bayi Baru Lahir (HDN) dapat terjadi pada kombinasi golongan darah orang tua yang bagaimana?",
+        options: [
+            "Ibu Rh+ dan ayah Rh-",
+            "Ibu Rh- dan ayah Rh+",
+            "Kedua orang tua Rh+",
+            "Kedua orang tua Rh-"
+        ],
+        correct: 1,
+        explanation: "HDN terjadi ketika ibu Rh- mengandung bayi Rh+ (dari ayah Rh+). Pada kehamilan kedua, antibodi Anti-D dari ibu dapat menyerang sel darah merah janin. Pencegahan dapat dilakukan dengan injeksi RhoGAM."
+    },
+    {
+        question: "Dua orang tua dengan golongan darah AB dan O akan menghasilkan anak dengan kemungkinan golongan darah?",
+        options: [
+            "Hanya AB",
+            "Hanya O",
+            "A atau B saja",
+            "A, B, AB, dan O"
+        ],
+        correct: 2,
+        explanation: "Orang tua AB (IAIB) hanya dapat memberikan alel IA atau IB, sedangkan orang tua O (ii) hanya dapat memberikan alel i. Hasilnya adalah anak dengan golongan A (IAi) atau B (IBi) dengan probabilitas 50% masing-masing. Anak tidak mungkin bergolongan AB atau O."
+    },
+    {
+        question: "Apa yang dimaksud dengan kodominansi dalam sistem golongan darah ABO?",
+        options: [
+            "Satu alel menutupi ekspresi alel lainnya",
+            "Kedua alel terekspresikan bersamaan",
+            "Alel hanya terekspresikan dalam kondisi tertentu",
+            "Alel bermutasi menjadi bentuk baru"
+        ],
+        correct: 1,
+        explanation: "Kodominansi adalah kondisi di mana kedua alel (IA dan IB) terekspresikan secara bersamaan dan setara pada fenotipe. Ini terlihat pada golongan darah AB, di mana kedua antigen A dan B muncul pada permukaan sel darah merah."
+    }
+];
+
+// ============================================
+// QUIZ STATE MANAGEMENT
+// ============================================
+let currentQuestion = 0;
+let userAnswers = [];
+let quizScore = 0;
+let quizCompleted = false;
+
+// ============================================
+// INITIALIZE QUIZ
+// ============================================
+function initQuiz() {
+    currentQuestion = 0;
+    userAnswers = new Array(quizQuestions.length).fill(null);
+    quizScore = 0;
+    quizCompleted = false;
+    
+    document.getElementById('quizResults').style.display = 'none';
+    document.getElementById('quizCard').style.display = 'block';
+    document.getElementById('quizExplanation').style.display = 'none';
+    
+    displayQuestion();
+}
+
+// ============================================
+// DISPLAY QUESTION
+// ============================================
+function displayQuestion() {
+    const question = quizQuestions[currentQuestion];
+    
+    // Update question number
+    document.getElementById('questionNumber').textContent = `Pertanyaan ${currentQuestion + 1}`;
+    document.getElementById('questionTotal').textContent = `dari ${quizQuestions.length}`;
+    
+    // Update question text
+    document.getElementById('questionText').textContent = question.question;
+    
+    // Create options
+    const optionsContainer = document.getElementById('quizOptions');
+    optionsContainer.innerHTML = '';
+    
+    question.options.forEach((option, index) => {
+        const optionDiv = document.createElement('div');
+        optionDiv.className = 'quiz-option';
+        
+        const isSelected = userAnswers[currentQuestion] === index;
+        if (isSelected) {
+            optionDiv.classList.add('selected');
+        }
+        
+        optionDiv.innerHTML = `
+            <input type="radio" 
+                   name="quizOption" 
+                   id="option${index}" 
+                   value="${index}"
+                   ${isSelected ? 'checked' : ''}>
+            <label for="option${index}">${option}</label>
+        `;
+        
+        optionDiv.addEventListener('click', () => selectOption(index));
+        optionsContainer.appendChild(optionDiv);
+    });
+    
+    // Update buttons
+    updateButtons();
+    
+    // Hide explanation
+    document.getElementById('quizExplanation').style.display = 'none';
+}
+
+// ============================================
+// SELECT OPTION
+// ============================================
+function selectOption(index) {
+    userAnswers[currentQuestion] = index;
+    
+    // Update visual selection
+    const options = document.querySelectorAll('.quiz-option');
+    options.forEach((opt, i) => {
+        if (i === index) {
+            opt.classList.add('selected');
+            opt.querySelector('input').checked = true;
+        } else {
+            opt.classList.remove('selected');
+            opt.querySelector('input').checked = false;
+        }
+    });
+    
+    updateButtons();
+}
+
+// ============================================
+// UPDATE BUTTONS
+// ============================================
+function updateButtons() {
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    
+    // Show/hide previous button
+    prevBtn.style.display = currentQuestion > 0 ? 'inline-block' : 'none';
+    
+    // Show next or submit button
+    if (currentQuestion < quizQuestions.length - 1) {
+        nextBtn.style.display = 'inline-block';
+        submitBtn.style.display = 'none';
+    } else {
+        nextBtn.style.display = 'none';
+        submitBtn.style.display = 'inline-block';
+    }
+}
+
+// ============================================
+// NAVIGATION FUNCTIONS
+// ============================================
+function nextQuestion() {
+    if (currentQuestion < quizQuestions.length - 1) {
+        currentQuestion++;
+        displayQuestion();
+    }
+}
+
+function previousQuestion() {
+    if (currentQuestion > 0) {
+        currentQuestion--;
+        displayQuestion();
+    }
+}
+
+// ============================================
+// SUBMIT QUIZ
+// ============================================
+function submitQuiz() {
+    // Check if all questions are answered
+    const unanswered = userAnswers.findIndex(answer => answer === null);
+    if (unanswered !== -1) {
+        alert(`Anda belum menjawab pertanyaan nomor ${unanswered + 1}. Silakan jawab semua pertanyaan sebelum mengirim.`);
+        currentQuestion = unanswered;
+        displayQuestion();
+        return;
+    }
+    
+    // Calculate score
+    quizScore = 0;
+    userAnswers.forEach((answer, index) => {
+        if (answer === quizQuestions[index].correct) {
+            quizScore++;
+        }
+    });
+    
+    quizCompleted = true;
+    showResults();
+}
+
+// ============================================
+// SHOW RESULTS
+// ============================================
+function showResults() {
+    document.getElementById('quizCard').style.display = 'none';
+    const resultsDiv = document.getElementById('quizResults');
+    resultsDiv.style.display = 'block';
+    
+    // Determine performance level
+    const percentage = (quizScore / quizQuestions.length) * 100;
+    let icon, title, message, iconClass;
+    
+    if (percentage >= 90) {
+        icon = '🏆';
+        title = 'Luar Biasa!';
+        message = 'Anda memiliki pemahaman yang sangat baik tentang golongan darah dan genetika. Pertahankan!';
+        iconClass = 'excellent';
+    } else if (percentage >= 70) {
+        icon = '🌟';
+        title = 'Bagus Sekali!';
+        message = 'Pemahaman Anda tentang golongan darah sudah cukup baik. Terus belajar untuk hasil yang lebih sempurna!';
+        iconClass = 'good';
+    } else if (percentage >= 50) {
+        icon = '👍';
+        title = 'Cukup Baik';
+        message = 'Anda sudah memahami dasar-dasar golongan darah. Pelajari kembali materi untuk meningkatkan pemahaman.';
+        iconClass = 'fair';
+    } else {
+        icon = '📚';
+        title = 'Perlu Belajar Lebih Banyak';
+        message = 'Jangan berkecil hati! Pelajari kembali materi tentang golongan darah dan coba lagi.';
+        iconClass = 'needs-improvement';
+    }
+    
+    // Update results display
+    document.getElementById('resultsIcon').textContent = icon;
+    document.getElementById('resultsIcon').className = `results-icon ${iconClass}`;
+    document.getElementById('resultsTitle').textContent = title;
+    document.getElementById('resultsMessage').textContent = message;
+    document.getElementById('finalScore').textContent = quizScore;
+    
+    // Create detailed breakdown
+    const breakdownDiv = document.getElementById('resultsBreakdown');
+    breakdownDiv.innerHTML = '<h4>Ringkasan Jawaban:</h4>';
+    
+    const breakdownList = document.createElement('div');
+    breakdownList.className = 'breakdown-list';
+    
+    quizQuestions.forEach((question, index) => {
+        const isCorrect = userAnswers[index] === question.correct;
+        const itemDiv = document.createElement('div');
+        itemDiv.className = `breakdown-item ${isCorrect ? 'correct' : 'incorrect'}`;
+        
+        itemDiv.innerHTML = `
+            <div class="breakdown-question">
+                <span class="breakdown-number">${index + 1}.</span>
+                <span>${question.question}</span>
+            </div>
+            <div class="breakdown-answer">
+                <span class="answer-status">${isCorrect ? '✓ Benar' : '✗ Salah'}</span>
+                ${!isCorrect ? `
+                    <div class="answer-details">
+                        <div><strong>Jawaban Anda:</strong> ${question.options[userAnswers[index]]}</div>
+                        <div><strong>Jawaban Benar:</strong> ${question.options[question.correct]}</div>
+                    </div>
+                ` : ''}
+            </div>
+            <div class="breakdown-explanation">
+                <strong>Penjelasan:</strong> ${question.explanation}
+            </div>
+        `;
+        
+        breakdownList.appendChild(itemDiv);
+    });
+    
+    breakdownDiv.appendChild(breakdownList);
+}
+
+// ============================================
+// RESTART QUIZ
+// ============================================
+function restartQuiz() {
+    initQuiz();
+    window.scrollTo({
+        top: document.getElementById('kuis').offsetTop - 100,
+        behavior: 'smooth'
+    });
+}
+
+// ============================================
+// BLOOD TYPE INHERITANCE CALCULATOR
+// ============================================
+function calculateInheritance() {
+    const fatherBlood = document.getElementById('fatherBlood').value;
+    const fatherRh = document.getElementById('fatherRh').value;
+    const motherBlood = document.getElementById('motherBlood').value;
+    const motherRh = document.getElementById('motherRh').value;
+    
+    if (!fatherBlood || !fatherRh || !motherBlood || !motherRh) {
+        alert('Mohon pilih semua golongan darah dan rhesus untuk kedua orang tua.');
+        return;
+    }
+    
+    // Get possible genotypes
+    const fatherGenotypes = getGenotypes(fatherBlood);
+    const motherGenotypes = getGenotypes(motherBlood);
+    
+    // Calculate ABO possibilities
+    const aboResults = {};
+    fatherGenotypes.forEach(fatherGeno => {
+        motherGenotypes.forEach(motherGeno => {
+            const children = crossGenotypes(fatherGeno, motherGeno);
+            children.forEach(child => {
+                const phenotype = getPhenotype(child);
+                aboResults[phenotype] = (aboResults[phenotype] || 0) + 1;
+            });
+        });
+    });
+    
+    // Normalize percentages
+    const totalCombinations = Object.values(aboResults).reduce((a, b) => a + b, 0);
+    Object.keys(aboResults).forEach(key => {
+        aboResults[key] = (aboResults[key] / totalCombinations * 100).toFixed(1);
+    });
+    
+    // Calculate Rh possibilities
+    const rhResults = calculateRhesus(fatherRh, motherRh);
+    
+    // Display results
+    displayInheritanceResults(aboResults, rhResults, fatherBlood, motherBlood, fatherRh, motherRh);
+}
+
+function getGenotypes(bloodType) {
+    const genotypes = {
+        'A': ['AA', 'AO'],
+        'B': ['BB', 'BO'],
+        'AB': ['AB'],
+        'O': ['OO']
+    };
+    return genotypes[bloodType];
+}
+
+function crossGenotypes(father, mother) {
+    const fatherAlleles = father.split('');
+    const motherAlleles = mother.split('');
+    const children = [];
+    
+    fatherAlleles.forEach(f => {
+        motherAlleles.forEach(m => {
+            children.push(f + m);
+        });
+    });
+    
+    return children;
+}
+
+function getPhenotype(genotype) {
+    const alleles = genotype.split('').sort();
+    const normalized = alleles.join('');
+    
+    if (normalized === 'AA' || normalized === 'AO') return 'A';
+    if (normalized === 'BB' || normalized === 'BO') return 'B';
+    if (normalized === 'AB') return 'AB';
+    if (normalized === 'OO') return 'O';
+    
+    return 'Unknown';
+}
+
+function calculateRhesus(fatherRh, motherRh) {
+    const results = {};
+    
+    if (fatherRh === 'positive' && motherRh === 'positive') {
+        results['Positif'] = 75;
+        results['Negatif'] = 25;
+    } else if (fatherRh === 'negative' && motherRh === 'negative') {
+        results['Positif'] = 0;
+        results['Negatif'] = 100;
+    } else {
+        results['Positif'] = 50;
+        results['Negatif'] = 50;
+    }
+    
+    return results;
+}
+
+function displayInheritanceResults(aboResults, rhResults, fatherBlood, motherBlood, fatherRh, motherRh) {
+    const resultsDiv = document.getElementById('simulatorResults');
+    const contentDiv = document.getElementById('resultsContent');
+    
+    let html = `
+        <div class="simulation-summary">
+            <p><strong>Persilangan:</strong> ${fatherBlood}${fatherRh === 'positive' ? '+' : '-'} (Ayah) × ${motherBlood}${motherRh === 'positive' ? '+' : '-'} (Ibu)</p>
+        </div>
+        
+        <div class="results-section">
+            <h4>🩸 Kemungkinan Golongan Darah ABO</h4>
+            <div class="probability-chart">
+    `;
+    
+    Object.entries(aboResults).forEach(([type, percentage]) => {
+        html += `
+            <div class="probability-item">
+                <span class="blood-type-label">${type}</span>
+                <div class="probability-bar">
+                    <div class="bar-fill" style="width: ${percentage}%"></div>
+                </div>
+                <span class="percentage-label">${percentage}%</span>
+            </div>
+        `;
+    });
+    
+    html += `
+            </div>
+        </div>
+        
+        <div class="results-section">
+            <h4>🧬 Kemungkinan Rhesus</h4>
+            <div class="probability-chart">
+    `;
+    
+    Object.entries(rhResults).forEach(([rh, percentage]) => {
+        if (percentage > 0) {
+            html += `
+                <div class="probability-item">
+                    <span class="blood-type-label">Rh ${rh}</span>
+                    <div class="probability-bar">
+                        <div class="bar-fill" style="width: ${percentage}%"></div>
+                    </div>
+                    <span class="percentage-label">${percentage}%</span>
+                </div>
+            `;
+        }
+    });
+    
+    html += `
+            </div>
+        </div>
+        
+        <div class="results-note">
+            <strong>📝 Catatan:</strong> Hasil ini adalah probabilitas teoritis berdasarkan hukum pewarisan Mendel. 
+            Untuk mengetahui golongan darah pasti, diperlukan tes laboratorium.
+        </div>
+    `;
+    
+    // Add HDN warning if applicable
+    if (motherRh === 'negative' && fatherRh === 'positive') {
+        html += `
+            <div class="hdn-warning">
+                <strong>⚠️ Peringatan Medis:</strong> Kombinasi ibu Rh- dengan ayah Rh+ berisiko menyebabkan 
+                Penyakit Hemolitik pada Bayi Baru Lahir (HDN). Konsultasi dengan dokter dan pemberian RhoGAM 
+                sangat dianjurkan untuk mencegah komplikasi.
+            </div>
+        `;
+    }
+    
+    contentDiv.innerHTML = html;
+    resultsDiv.style.display = 'block';
+    
+    // Smooth scroll to results
+    resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ============================================
+// CONTACT FORM
+// ============================================
+document.addEventListener('DOMContentLoaded', function() {
+    const contactForm = document.getElementById('contactForm');
+    
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('contactName').value.trim();
+            const email = document.getElementById('contactEmail').value.trim();
+            const message = document.getElementById('contactMessage').value.trim();
+            
+            // Simple validation
+            if (!name || !email || !message) {
+                alert('Mohon isi semua field yang wajib diisi.');
+                return;
+            }
+            
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('contactMessag.');
+                return;
+            }
+            
+            // Show success message
+            document.getElementById('formSuccess').style.display = 'block';
+            
+            // Reset form
+            contactForm.reset();
+            
+            // Hide success message after 5 seconds
+            setTimeout(() => {
+                document.getElementById('formSuccess').style.display = 'none';
+            }, 5000);
+        });
+    }
+    
+    // Initialize quiz
+    initQuiz();
+});
+
+// ============================================
+// SMOOTH SCROLLING
+// ============================================
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+
+// ============================================
+// NAVBAR SCROLL EFFECT
+// ============================================
+window.addEventListener('scroll', function() {
+    const navbar = document.getElementById('navbar');
+    if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+    } else {
+        navbar.classList.remove('scrolled');
+    }
+    
+    // Show/hide scroll to top button
+    const scrollBtn = document.getElementById('scrollToTop');
+    if (window.scrollY > 300) {
+        scrollBtn.style.display = 'block';
+    } else {
+        scrollBtn.style.display = 'none';
+    }
+});
+
+// ============================================
+// SCROLL TO TOP
+// ============================================
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+// ============================================
+// MOBILE NAVIGATION
+// ============================================
+const navToggle = document.getElementById('navToggle');
+const navMenu = document.getElementById('navMenu');
+
+if (navToggle) {
+    navToggle.addEventListener('click', function() {
+        navMenu.classList.toggle('active');
+        navToggle.classList.toggle('active');
+    });
+}
+
+// Close mobile menu when clicking on a link
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', function() {
+        navMenu.classList.remove('active');
+        navToggle.classList.remove('active');
+    });
+});
+
+// ============================================
+// FADE IN ANIMATION ON SCROLL
+// ============================================
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, observerOptions);
+
+document.querySelectorAll('.fade-in').forEach(element => {
+    observer.observe(element);
+});
+
+    <!-- ============================================
+         FOOTER
+         ============================================ -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>🧬 GenetikaLab</h4>
+                    <p>Platform pembelajaran interaktif untuk memahami genetika golongan darah dengan cara yang menyenangkan, mudah dipahami, dan berbasis sains.</p>
+                    <div class="social-links" style="margin-top: 1rem;">
+                        <a href="#" style="margin-right: 1rem; color: inherit; text-decoration: none;">📘 Facebook</a>
+                        <a href="#" style="margin-right: 1rem; color: inherit; text-decoration: none;">🐦 Twitter</a>
+                        <a href="#" style="color: inherit; text-decoration: none;">📷 Instagram</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Menu Utama</h4>
+                    <ul>
+                        <li><a href="#beranda">Beranda</a></li>
+                        <li><a href="#konsep">Konsep Dasar</a></li>
+                        <li><a href="#pewarisan">Pewarisan Genetik</a></li>
+                        <li><a href="#simulasi">Simulasi Interaktif</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Fitur</h4>
+                    <ul>
+                        <li><a href="#kuis">Kuis Evaluasi</a></li>
+                        <li><a href="#kontak">Hubungi Kami</a></li>
+                        <li><a href="#">Materi Lengkap (PDF)</a></li>
+                        <li><a href="#">Video Tutorial</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Sumber Daya</h4>
+                    <ul>
+                        <li><a href="#">Panduan Penggunaan</a></li>
+                        <li><a href="#">FAQ (Pertanyaan Umum)</a></li>
+                        <li><a href="#">Referensi Ilmiah</a></li>
+                        <li><a href="#">Tentang Kami</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 GenetikaLab. Dibuat untuk tujuan edukasi dan pembelajaran. Semua hak cipta dilindungi undang-undang.</p>
+                <p style="margin-top: 0.5rem; font-size: 0.875rem;">Dikembangkan dengan ❤️ untuk pendidikan biologi di Indonesia</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-to-top" id="scrollToTop" onclick="scrollToTop()" aria-label="Kembali ke atas">↑</button>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html> fade-in">
+                <h2 class="section-title">Simulasi Pewarisan Golongan Darah</h2>
+                <p class="section-subtitle">Hitung kemungkinan golongan darah anak berdasarkan golongan darah orang tua</p>
+            </div>
+
+            <div class="simulator-container fade-in">
+                <div class="simulator-card">
+                    <div class="simulator-inputs">
+                        <div class="parent-input">
+                            <h3>👨 Golongan Darah Ayah</h3>
+                            <div class="input-group">
+                                <label for="fatherBlood">Golongan ABO</label>
+                                <select id="fatherBlood" class="blood-select">
+                                    <option value="">Pilih Golongan</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="AB">AB</option>
+                                    <option value="O">O</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label for="fatherRh">Rhesus</label>
+                                <select id="fatherRh" class="blood-select">
+                                    <option value="">Pilih Rhesus</option>
+                                    <option value="positive">Positif (+)</option>
+                                    <option value="negative">Negatif (-)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="cross-symbol">×</div>
+
+                        <div class="parent-input">
+                            <h3>👩 Golongan Darah Ibu</h3>
+                            <div class="input-group">
+                                <label for="motherBlood">Golongan ABO</label>
+                                <select id="motherBlood" class="blood-select">
+                                    <option value="">Pilih Golongan</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="AB">AB</option>
+                                    <option value="O">O</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label for="motherRh">Rhesus</label>
+                                <select id="motherRh" class="blood-select">
+                                    <option value="">Pilih Rhesus</option>
+                                    <option value="positive">Positif (+)</option>
+                                    <option value="negative">Negatif (-)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary btn-calculate" id="calculateBtn" onclick="calculateInheritance()">
+                        🧬 Hitung Kemungkinan
+                    </button>
+
+                    <div class="simulator-results" id="simulatorResults" style="display: none;">
+                        <h3>Hasil Simulasi</h3>
+                        <div id="resultsContent"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- ============================================
          KUIS SECTION
          ============================================ -->
