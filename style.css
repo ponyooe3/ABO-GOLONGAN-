@@ -2254,3 +2254,111 @@ body {
 
 .hidden { display: none; }
 .visible { display: block; }
+/* ==========================================================
+   BAGIAN RESPONSIVITAS MOBILE (HARUS DITAMBAH DI BAWAH style.css ASLI)
+   ========================================================== */
+
+/* ----------------------------------
+   PENYESUAIAN GLOBAL (Wajib untuk Responsif)
+   ---------------------------------- */
+body {
+    /* Pastikan tidak ada overflow horizontal yang tidak diinginkan */
+    overflow-x: hidden; 
+}
+
+/* CONTAINER agar tidak melebihi lebar layar */
+.container {
+    padding-left: 15px;
+    padding-right: 15px;
+    /* Ubah ukuran max-width dari 960px menjadi 90% di mobile */
+    max-width: 100%; 
+}
+
+/* ----------------------------------
+   MEDIA QUERIES - UNTUK LAYAR DENGAN LEBAR MAKSIMAL 768px (Tablet dan Mobile)
+   ---------------------------------- */
+@media (max-width: 768px) {
+    /* --- Navigasi --- */
+    .nav-container {
+        /* Ubah tata letak navigasi dari horizontal menjadi vertikal/bertumpuk */
+        flex-direction: column; 
+        align-items: flex-start;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .nav-menu {
+        /* Posisikan menu di bawah logo */
+        width: 100%;
+        margin-top: 10px;
+        flex-direction: column; 
+    }
+
+    .nav-menu a {
+        /* Buat tombol menu mengisi penuh lebar */
+        padding: 8px 0;
+        text-align: left;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .logo-text {
+        font-size: 1.5rem; /* Sedikit perkecil logo */
+    }
+
+    /* --- Header / Hero Section --- */
+    .hero-content {
+        padding: 80px 10px; /* Kurangi padding di bagian atas/bawah */
+    }
+
+    .hero-content h1 {
+        font-size: 2.2rem; /* Perkecil judul utama */
+    }
+
+    .hero-content p {
+        font-size: 1rem; /* Perkecil teks paragraf */
+    }
+
+    /* --- Struktur Kolom/Section Utama --- */
+    .section-header h2 {
+        font-size: 1.8rem;
+    }
+    
+    .section {
+        padding: 50px 0; /* Kurangi padding vertikal */
+    }
+
+    /* --- Simulasi dan Pewarisan (Pola 2 Kolom) --- */
+    /* Jika Anda menggunakan display: flex atau display: grid untuk membuat tata letak
+       berdampingan (misalnya untuk tabel pewarisan dan aturan), harus diubah menjadi bertumpuk. */
+    .simulasi-layout, 
+    .pewarisan-content,
+    .tabel-layout { 
+        flex-direction: column; /* Ubah tampilan kolom menjadi bertumpuk */
+    }
+
+    /* Atur lebar setiap elemen kolom menjadi 100% */
+    .simulasi-layout > div, 
+    .pewarisan-content > div {
+        width: 100%;
+        margin-bottom: 20px; /* Tambah spasi antar elemen yang bertumpuk */
+    }
+
+    /* --- Tabel --- */
+    /* Agar tabel bisa di-scroll secara horizontal jika terlalu lebar */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    table {
+        /* Memastikan tabel menggunakan lebar penuh jika memungkinkan, 
+           tapi memungkinkan scrolling jika terlalu besar */
+        min-width: 500px; 
+    }
+    
+    /* --- Kotak Khusus (Paternitas/Warning) --- */
+    .warning-box, .paternity-rules {
+        padding: 15px;
+    }
+
+}
